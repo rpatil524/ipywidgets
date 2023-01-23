@@ -9,6 +9,9 @@ from .trait_types import InstanceDict
 from .widget_style import Style
 from .widget_core import CoreWidget
 from .domwidget import DOMWidget
+from .utils import deprecation
+
+import warnings
 
 @register
 class DescriptionStyle(Style, CoreWidget, Widget):
@@ -24,6 +27,13 @@ class DescriptionWidget(DOMWidget, CoreWidget):
     description_allow_html = Bool(False, help="Accept HTML in the description.").tag(sync=True)
     style = InstanceDict(DescriptionStyle, help="Styling customizations").tag(sync=True, **widget_serialization)
 
+    def __init__(self, *args, **kwargs):
+        if 'description_tooltip' in kwargs:
+            deprecation("the description_tooltip argument is deprecated, use tooltip instead")
+            kwargs.setdefault('tooltip', kwargs['description_tooltip'])
+            del kwargs['description_tooltip']
+        super().__init__(*args, **kwargs)
+
     def _repr_keys(self):
         for key in super()._repr_keys():
             # Exclude style if it had the default value
@@ -32,3 +42,17 @@ class DescriptionWidget(DOMWidget, CoreWidget):
                 if repr(value) == '%s()' % value.__class__.__name__:
                     continue
             yield key
+
+    @property
+    def description_tooltip(self):
+        """The tooltip information.
+        .. deprecated :: 8.0.0
+           Use tooltip attribute instead.
+        """
+        deprecation(".description_tooltip is deprecated, use .tooltip instead")
+        return self.tooltip
+
+    @description_tooltip.setter
+    def description_tooltip(self, tooltip):
+        deprecation(".description_tooltip is deprecated, use .tooltip instead")
+        self.tooltip = tooltip

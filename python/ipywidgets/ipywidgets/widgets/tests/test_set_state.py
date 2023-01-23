@@ -67,14 +67,14 @@ def deserializer(json_data, widget):
     return DataInstance( memoryview(json_data['data']).tobytes() if json_data else None )
 
 class DataWidget(SimpleWidget):
-    d = Instance(DataInstance).tag(sync=True, to_json=mview_serializer, from_json=deserializer)
+    d = Instance(DataInstance, args=()).tag(sync=True, to_json=mview_serializer, from_json=deserializer)
 
 # A widget that has a buffer that might be changed on reception:
 def truncate_deserializer(json_data, widget):
     return DataInstance( json_data['data'][:20].tobytes() if json_data else None )
 
 class TruncateDataWidget(SimpleWidget):
-    d = Instance(DataInstance).tag(sync=True, to_json=bytes_serializer, from_json=truncate_deserializer)
+    d = Instance(DataInstance, args=()).tag(sync=True, to_json=bytes_serializer, from_json=truncate_deserializer)
 
 
 #
@@ -287,10 +287,13 @@ def test_hold_sync(echo):
     msg = {'method': 'echo_update', 'state': {'value': 42.0}, 'buffer_paths': []}
     call42 = mock.call(msg, buffers=[])
 
-    msg = {'method': 'update', 'state': {'value': 2.0, 'other': 11.0}, 'buffer_paths': []}
+    msg = {'method': 'update', 'state': {'value': 2.0}, 'buffer_paths': []}
     call2 = mock.call(msg, buffers=[])
 
-    calls = [call42, call2] if echo else [call2]
+    msg = {'method': 'update', 'state': {'other': 11.0}, 'buffer_paths': []}
+    call11 = mock.call(msg, buffers=[])
+
+    calls = [call42, call2, call11] if echo else [call2, call11]
     widget._send.assert_has_calls(calls)
 
 
@@ -304,8 +307,8 @@ def test_echo():
     assert widget.value == 1
 
     widget._send = mock.MagicMock()
-    # this mimics a value coming from the front end
-    widget.set_state({'value': 42})
+    # this mimics a state coming from the front end
+    widget.set_state({'value': 42, 'unexpected_field': 43})
     assert widget.value == 42
 
     # we expect this to be echoed

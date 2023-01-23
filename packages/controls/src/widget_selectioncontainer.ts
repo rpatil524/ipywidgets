@@ -422,35 +422,37 @@ export class TabView extends DOMWidgetView {
   luminoWidget: JupyterLuminoTabPanelWidget;
 }
 
-export class StackedModel extends SelectionContainerModel {
+export class StackModel extends SelectionContainerModel {
   defaults(): Backbone.ObjectHash {
     return {
       ...super.defaults(),
-      _model_name: 'StackedModel',
-      _view_name: 'StackedView',
+      _model_name: 'StackModel',
+      _view_name: 'StackView',
     };
   }
 }
 
-export class StackedView extends BoxView {
+export class StackView extends BoxView {
   initialize(parameters: WidgetView.IInitializeParameters): void {
     super.initialize(parameters);
     this.listenTo(this.model, 'change:selected_index', this.update_children);
   }
 
   update_children(): void {
-    const selected_child =
-      this.model.get('children')[this.model.get('selected_index')];
-    this.children_views
-      ?.update([selected_child])
-      .then((views: DOMWidgetView[]) => {
-        // Notify all children that their sizes may have changed.
-        views.forEach((view) => {
-          MessageLoop.postMessage(
-            view.luminoWidget,
-            Widget.ResizeMessage.UnknownSize
-          );
-        });
+    let child: any[];
+    if (this.model.get('selected_index') === null) {
+      child = [];
+    } else {
+      child = [this.model.get('children')[this.model.get('selected_index')]];
+    }
+    this.children_views?.update(child).then((views: DOMWidgetView[]) => {
+      // Notify all children that their sizes may have changed.
+      views.forEach((view) => {
+        MessageLoop.postMessage(
+          view.luminoWidget,
+          Widget.ResizeMessage.UnknownSize
+        );
       });
+    });
   }
 }

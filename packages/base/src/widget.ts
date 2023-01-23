@@ -25,7 +25,7 @@ import { IClassicComm, ICallbacks } from './services-shim';
 
 import { JUPYTER_WIDGETS_VERSION } from './version';
 
-import { Dict } from './utils';
+import { BufferJSON, Dict } from './utils';
 
 import { KernelMessage } from '@jupyterlab/services';
 
@@ -34,7 +34,7 @@ import { KernelMessage } from '@jupyterlab/services';
  */
 export function unpack_models(
   value: any | Dict<unknown> | string | (Dict<unknown> | string)[],
-  manager: IWidgetManager
+  manager?: IWidgetManager // actually required, but typed to be compatible with ISerializers
 ): Promise<WidgetModel | Dict<WidgetModel> | WidgetModel[] | any> {
   if (Array.isArray(value)) {
     const unpacked: any[] = [];
@@ -50,7 +50,7 @@ export function unpack_models(
     return utils.resolvePromisesDict(unpacked);
   } else if (typeof value === 'string' && value.slice(0, 10) === 'IPY_MODEL_') {
     // get_model returns a promise already
-    return manager.get_model(value.slice(10, value.length));
+    return manager!.get_model(value.slice(10, value.length));
   } else {
     return Promise.resolve(value);
   }
@@ -227,7 +227,7 @@ export class WidgetModel extends Backbone.Model {
       case 'echo_update':
         this.state_change = this.state_change
           .then(() => {
-            const state = data.state;
+            const state: Dict<BufferJSON> = data.state;
             const buffer_paths = data.buffer_paths ?? [];
             const buffers = msg.buffers?.slice(0, buffer_paths.length) ?? [];
             utils.put_buffers(state, buffer_paths, buffers);
@@ -295,7 +295,9 @@ export class WidgetModel extends Backbone.Model {
     try {
       this.set(state);
     } catch (e) {
-      console.error(`Error setting state: ${e.message}`);
+      console.error(
+        `Error setting state: ${e instanceof Error ? e.message : e}`
+      );
     } finally {
       this._state_lock = null;
     }
@@ -334,6 +336,13 @@ export class WidgetModel extends Backbone.Model {
     if (this.comm !== void 0) {
       if (msg.content.execution_state === 'idle') {
         this._pending_msgs--;
+        // Sanity check for logic errors that may push this below zero.
+        if (this._pending_msgs < 0) {
+          console.error(
+            `Jupyter Widgets message throttle: Pending messages < 0 (=${this._pending_msgs}), which is unexpected. Resetting to 0 to continue.`
+          );
+          this._pending_msgs = 0; // do not break message throttling in case of unexpected errors
+        }
         // Send buffer if one is waiting and we are below the throttle.
         if (this._msg_buffer !== null && this._pending_msgs < 1) {
           const msgId = this.send_sync_message(
@@ -547,7 +556,13 @@ export class WidgetModel extends Backbone.Model {
       return '';
     }
     try {
-      callbacks.iopub = callbacks.iopub || {};
+      // Make a 2-deep copy so we don't modify the caller's callbacks object.
+      callbacks = {
+        shell: { ...callbacks.shell },
+        iopub: { ...callbacks.iopub },
+        input: callbacks.input,
+      };
+      // Save the caller's status callback so we can call it after we handle the message.
       const statuscb = callbacks.iopub.status;
       callbacks.iopub.status = (msg: KernelMessage.IStatusMsg): void => {
         this._handle_status(msg);
@@ -638,11 +653,11 @@ export class WidgetModel extends Backbone.Model {
    * deserialization of widget models.
    */
   static _deserialize_state(
-    state: JSONObject,
+    state: Dict<BufferJSON>,
     manager: IWidgetManager
   ): Promise<utils.Dict<unknown>> {
     const serializers = this.serializers;
-    let deserialized: Dict<any>;
+    let deserialized: Dict<unknown>;
     if (serializers) {
       deserialized = {};
       for (const k in state) {
@@ -923,7 +938,7 @@ export class JupyterLuminoPanelWidget extends Panel {
       return;
     }
     super.dispose();
-    this._view.remove();
+    this._view?.remove();
     this._view = null!;
   }
 

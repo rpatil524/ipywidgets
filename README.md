@@ -1,11 +1,11 @@
 # ipywidgets: Interactive HTML Widgets
 
-|    Purpose                        |     Badges                       |
-|----------------------------|----------------------------|
-| **Latest (master: future 8.0)**  | [![Test Status](https://github.com/jupyter-widgets/ipywidgets/actions/workflows/tests.yml/badge.svg?query=branch%3Amaster)](https://github.com/jupyter-widgets/ipywidgets/actions?query=branch%3Amaster) [![Documentation Status: latest](https://img.shields.io/readthedocs/ipywidgets?logo=read-the-docs)](https://ipywidgets.readthedocs.io/en/latest/?badge=latest) [![Binder:master](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/jupyter-widgets/ipywidgets/master?urlpath=lab/tree/docs%2Fsource%2Fexamples) |
-| **Stable** | [![Version](https://img.shields.io/pypi/v/ipywidgets.svg?logo=pypi)](https://pypi.python.org/pypi/ipywidgets) [![Conda Version](https://img.shields.io/conda/vn/conda-forge/ipywidgets.svg?logo=conda-forge)](https://anaconda.org/conda-forge/ipywidgets) [![Documentation Status](https://img.shields.io/readthedocs/ipywidgets?logo=read-the-docs)](https://ipywidgets.readthedocs.io/en/stable/?badge=stable) [![Binder:7.x](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/jupyter-widgets/ipywidgets/7.x?urlpath=lab/tree/docs%2Fsource%2Fexamples) |
-| **Communication** | [![Join the chat at https://gitter.im/ipython/ipywidgets](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/jupyter-widgets/Lobby) [![Discourse](https://img.shields.io/badge/help_forum-discourse-blue?logo=discourse)](https://discourse.jupyter.org/c/widgets/46) |
-| | |
+| Purpose                         | Badges                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| ------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Latest (master: future 8.0)** | [![Test Status](https://github.com/jupyter-widgets/ipywidgets/actions/workflows/tests.yml/badge.svg?query=branch%3Amaster)](https://github.com/jupyter-widgets/ipywidgets/actions?query=branch%3Amaster) [![Documentation Status: latest](https://img.shields.io/readthedocs/ipywidgets?logo=read-the-docs)](https://ipywidgets.readthedocs.io/en/latest/?badge=latest) [![Binder:master](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/jupyter-widgets/ipywidgets/master?urlpath=lab/tree/docs%2Fsource%2Fexamples)                                     |
+| **Stable**                      | [![Version](https://img.shields.io/pypi/v/ipywidgets.svg?logo=pypi)](https://pypi.python.org/pypi/ipywidgets) [![Conda Version](https://img.shields.io/conda/vn/conda-forge/ipywidgets.svg?logo=conda-forge)](https://anaconda.org/conda-forge/ipywidgets) [![Documentation Status](https://img.shields.io/readthedocs/ipywidgets?logo=read-the-docs)](https://ipywidgets.readthedocs.io/en/stable/?badge=stable) [![Binder:7.x](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/jupyter-widgets/ipywidgets/7.x?urlpath=lab/tree/docs%2Fsource%2Fexamples) |
+| **Communication**               | [![Join the chat at https://gitter.im/ipython/ipywidgets](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/jupyter-widgets/Lobby) [![Discourse](https://img.shields.io/badge/help_forum-discourse-blue?logo=discourse)](https://discourse.jupyter.org/c/widgets/46)                                                                                                                                                                                                                                                                                             |
+|                                 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 
 **ipywidgets**, also known as jupyter-widgets or simply widgets, are
 [interactive HTML widgets](https://github.com/jupyter-widgets/ipywidgets/blob/master/docs/source/examples/Index.ipynb)
@@ -88,8 +88,8 @@ see the detailed [developer install](docs/source/dev_install.md) instructions.
 If you want to install ipywidgets from source, **you will need the
 [yarn](https://yarnpkg.com/) package manager version 1.2.1 or later**.
 To install the latest master version from the root directory of the source
-code, run ``dev-install.sh``. To only build the Python package enter
-``pip install -e .``.
+code, run `dev-install.sh`. To only build the Python package enter
+`pip install -e .`.
 
 ## Usage
 
@@ -104,15 +104,15 @@ See the [examples](docs/source/examples.md) section of the documentation. The wi
 
 Refer to change log for more detail.
 
-| ipywidgets | JupyterLab       | [Classic Notebook](https://github.com/jupyter/notebook) | [nbclassic](https://github.com/jupyterlab/nbclassic) |
-| ---------- | :--------------: | :--------------: | :---------: |
-| master     |                  |         -        | TBD   |
-| 7.6.3      |                  |                  | 0.2.6 |
-| **Legacy** |                  |                  |   |
-| 6.x        |                  |                  | - |
-| 5.x        |                  | 4.2              | - |
-| 4.1.x      |                  | 4.1              | - |
-| 4.0.x      |                  | 4.0              | - |
+| ipywidgets | JupyterLab | [Classic Notebook](https://github.com/jupyter/notebook) | [nbclassic](https://github.com/jupyterlab/nbclassic) |
+| ---------- | :--------: | :-----------------------------------------------------: | :--------------------------------------------------: |
+| master     |            |                            -                            |                         TBD                          |
+| 7.6.3      |            |                                                         |                        0.2.6                         |
+| **Legacy** |            |                                                         |                                                      |
+| 6.x        |            |                                                         |                          -                           |
+| 5.x        |            |                           4.2                           |                          -                           |
+| 4.1.x      |            |                           4.1                           |                          -                           |
+| 4.0.x      |            |                           4.0                           |                          -                           |
 
 ## Contributing to ipywidgets
 
@@ -132,3 +132,9 @@ See the [LICENSE](LICENSE) file in this repository for details.
 - [Documentation for Project Jupyter](https://jupyter.readthedocs.io/en/latest/index.html) [[PDF](https://media.readthedocs.org/pdf/jupyter/latest/jupyter.pdf)]
 - [![Discourse](https://img.shields.io/badge/help_forum-discourse-blue?logo=discourse)](https://discourse.jupyter.org/)
   [![Google Group](https://img.shields.io/badge/-Google%20Group-lightgrey.svg)](https://groups.google.com/forum/#!forum/jupyter)
+
+## [Weekly Team Meetings](https://github.com/jupyter-widgets/team-compass/issues/1)
+
+Developer Meetings take place on [zoom](https://zoom.us/my/jovyan?pwd=c0JZTHlNdS9Sek9vdzR3aTJ4SzFTQT09), on Tuesdays at 9:30AM Pacific Time ([your time](https://www.thetimezoneconverter.com/?t=9%3A30%20am&tz=San%20Francisco)).
+
+Minutes are taken at [Hackmd.io](https://hackmd.io/5XWHyOoLTRqyXzEHsVmxXg).
